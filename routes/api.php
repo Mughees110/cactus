@@ -26,6 +26,11 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('categories-get','App\Http\Controllers\CategoryController@index');
 	Route::post('categories-delete','App\Http\Controllers\CategoryController@delete');
 	Route::post('business-update','App\Http\Controllers\BusinessController@update');
+
+	Route::post('points-store','App\Http\Controllers\PointController@store');
+	Route::post('points-update','App\Http\Controllers\PointController@update');
+	Route::post('points-get','App\Http\Controllers\PointController@index');
+	Route::post('points-delete','App\Http\Controllers\PointController@delete');
 });
 Route::get('invalid',function(){
 	 return response()->json(['message'=>'Access token not matched'],422);
