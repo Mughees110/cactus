@@ -31,7 +31,7 @@ class PointController extends Controller
     	}
     	$point->points=$request->json('points');
     	$point->price=$request->json('price');
-        $category->save();
+        $point->save();
         return response()->json(['status'=>200,'message'=>'updated successfully']);
     }
     public function delete(Request $request){
