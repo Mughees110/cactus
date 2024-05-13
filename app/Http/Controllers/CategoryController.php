@@ -13,7 +13,7 @@ class CategoryController extends Controller
     }
     public function store(Request $request){
     	if(empty($request->get('name'))){
-    		return response()->json(['status'=>401,'message'=>'name is required'])
+    		return response()->json(['status'=>401,'message'=>'name is required']);
     	}
     	$category=new Category;
     	$category->name=$request->get('name');

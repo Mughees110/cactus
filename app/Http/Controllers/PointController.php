@@ -12,7 +12,7 @@ class PointController extends Controller
     }
     public function store(Request $request){
     	if(empty($request->json('businessId'))){
-    		return response()->json(['status'=>401,'message'=>'businessId is required'])
+    		return response()->json(['status'=>401,'message'=>'businessId is required']);
     	}
     	$point=new Point;
     	$point->points=$request->json('points');
