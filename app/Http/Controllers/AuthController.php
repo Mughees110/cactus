@@ -36,7 +36,7 @@ class AuthController extends Controller
             $user->name=$request->json('name');
             $user->email=$request->json('email');
             $user->password=Hash::make($request->json('password'));
-            $user->phoneNumber=$request->json('phone');
+            $user->phone=$request->json('phone');
             $user->role=$request->json('role');
             
             /*$image=Input::file("companyLogo");
