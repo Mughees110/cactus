@@ -73,8 +73,9 @@ class BusinessController extends Controller
                         $value->setAttribute('distance',$result);
                     }
                 }
+                $value->setAttribute('businesses',$bs);
             }
-            $value->setAttribute('businesses',$bs);
+            
         }
         return response()->json(['status'=>200,'data'=>$categories]);
     }
