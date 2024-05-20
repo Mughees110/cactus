@@ -51,7 +51,7 @@ class BusinessController extends Controller
         $categories=Category::all();
         foreach ($categories as $key => $value) {
             $bs=Business::where('categoryId',$value->id)->get();
-            if($bs){
+            
                 foreach ($bs as $key => $value) {
                     $latitudeFrom=(float)$value->latitude;
                     $longitudeFrom=(float)$value->longitude;
@@ -74,7 +74,6 @@ class BusinessController extends Controller
                     }
                 }
                 $value->setAttribute('businesses',$bs);
-            }
             
         }
         return response()->json(['status'=>200,'data'=>$categories]);
