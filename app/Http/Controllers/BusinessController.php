@@ -49,8 +49,8 @@ class BusinessController extends Controller
     }
     public function index(Request $request){
         $categories=Category::all();
-        foreach ($categories as $key => $value) {
-            $bs=Business::where('categoryId',$value->id)->get();
+        foreach ($categories as $key => $valueC) {
+            $bs=Business::where('categoryId',$valueC->id)->get();
             
                 foreach ($bs as $key => $value) {
                     $latitudeFrom=(float)$value->latitude;
@@ -73,7 +73,7 @@ class BusinessController extends Controller
                         $value->setAttribute('distance',$result);
                     }
                 }
-                $value->setAttribute('businesses',$bs);
+                $valueC->setAttribute('businesses',$bs);
             
         }
         return response()->json(['status'=>200,'data'=>$categories]);
