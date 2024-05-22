@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Point;
+use App\Models\User;
 class PointController extends Controller
 {
     public function index(Request $request){
@@ -44,5 +45,24 @@ class PointController extends Controller
     	}
     	$point->delete();
     	return response()->json(['status'=>200,'message'=>'deleted successfully']);
+    }
+    public function submitToCalculate(Request $request){
+        if(empty($request->json('userId'))||empty($request->json('businessId'))||empty($request->json('price'))){
+            return response()->json(['status'=>401,'message'=>'userId businessId price required']);
+        }
+        $point=Point::where('businessId',$request->json('businessId'))->first();
+        if(!$point){
+            return response()->json(['status'=>401,'message'=>'Points record missing']);
+        }
+        $user=User::find($request->json('userId'));
+        if(!$user){
+            return response()->json(['status'=>401,'message'=>'user does not exists']);
+        }
+        $pp=$point->points/$point->price;
+        $tp=$request->json('price')*$pp;
+        $user->points=$tp;
+        $user->save();
+        return response()->json(['status'=>200,'data'=>$user,'message'=>'Added successfully']);
+
     }
 }

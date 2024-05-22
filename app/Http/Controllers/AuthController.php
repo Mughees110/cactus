@@ -109,5 +109,22 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+    public function gmail(Request $request){
+        if(empty($request->json('email'))){
+            return response()->json(['status'=>401,'message'=>'email is required']);
+        }
+        $exists=User::where('email',$request->json('email'))->exists();
+        if($exists==false){
+            $user=new User;
+            $user->name=$request->json('name');
+            $user->email=$request->json('email');
+            $user->role='gmail';
+            
+            $user->save();
+            return response()->json(['status'=>200,'data'=>$user,'exists'=>'no']);
+        }
+        $user=User::where('email',$request->json('email'))->first();
+        return response()->json(['status'=>200,'data'=>$user,'exists'=>'yes']);
+    }
 
 }

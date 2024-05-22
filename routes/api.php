@@ -18,6 +18,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 Route::post('register','App\Http\Controllers\AuthController@register');
+Route::post('gmail','App\Http\Controllers\AuthController@gmail');
 Route::post('login','App\Http\Controllers\AuthController@login');
 Route::middleware('auth:sanctum')->group(function () {
 	
@@ -33,7 +34,11 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('points-delete','App\Http\Controllers\PointController@delete');
 
 	Route::post('businesses-get','App\Http\Controllers\BusinessController@index');
+
+
+
 });
+Route::post('submit-to-calculate','App\Http\Controllers\PointController@submitToCalculate');
 Route::get('invalid',function(){
 	 return response()->json(['message'=>'Access token not matched'],422);
 })->name('invalid');
