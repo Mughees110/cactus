@@ -119,6 +119,7 @@ class AuthController extends Controller
             $user->name=$request->json('name');
             $user->email=$request->json('email');
             $user->role='gmail';
+            $user->password="123456";
             
             $user->save();
             return response()->json(['status'=>200,'data'=>$user,'exists'=>'no']);
