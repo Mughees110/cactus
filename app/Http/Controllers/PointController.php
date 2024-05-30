@@ -47,8 +47,11 @@ class PointController extends Controller
     	return response()->json(['status'=>200,'message'=>'deleted successfully']);
     }
     public function submitToCalculate(Request $request){
-        if(empty($request->json('userId'))||empty($request->json('businessId'))||empty($request->json('price'))){
-            return response()->json(['status'=>401,'message'=>'userId businessId price required']);
+        if(empty($request->json('secret-key'))||empty($request->json('userId'))||empty($request->json('businessId'))||empty($request->json('price'))){
+            return response()->json(['status'=>401,'message'=>'secret-key userId businessId price required']);
+        }
+        if($request->json('secret-key')!="base64:UtWHLdJ5muqnQ+E8p8jV/anRE24QQLy+FwFALtTtoM8="){
+            return response()->json(['status'=>401,'message'=>'secret key does not match']);
         }
         $point=Point::where('businessId',$request->json('businessId'))->first();
         if(!$point){
