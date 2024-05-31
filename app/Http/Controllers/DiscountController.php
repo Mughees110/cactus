@@ -11,8 +11,8 @@ class DiscountController extends Controller
     	return response()->json(['status'=>200,'data'=>$discounts]);
     }
     public function store(Request $request){
-    	if(empty($request->json('discountId'))){
-    		return response()->json(['status'=>401,'message'=>'discountId is required']);
+    	if(empty($request->json('businessId'))){
+    		return response()->json(['status'=>401,'message'=>'businessId is required']);
     	}
     	$discount=new Discount;
     	$discount->discount=$request->json('discount');
