@@ -35,7 +35,15 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('businesses-get','App\Http\Controllers\BusinessController@index');
 
+	Route::post('items-store','App\Http\Controllers\ItemController@store');
+	Route::post('items-update','App\Http\Controllers\ItemController@update');
+	Route::post('items-get','App\Http\Controllers\ItemController@index');
+	Route::post('items-delete','App\Http\Controllers\ItemController@delete');
 
+	Route::post('discounts-store','App\Http\Controllers\DiscountController@store');
+	Route::post('discounts-update','App\Http\Controllers\DiscountController@update');
+	Route::post('discounts-get','App\Http\Controllers\DiscountController@index');
+	Route::post('discounts-delete','App\Http\Controllers\DiscountController@delete');
 
 });
 Route::post('submit-to-calculate','App\Http\Controllers\PointController@submitToCalculate');
