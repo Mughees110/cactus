@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Point;
 use App\Models\User;
+use App\Models\Consumption;
+use App\Models\Item;
+use App\Models\Business;
 class PointController extends Controller
 {
     public function index(Request $request){
@@ -67,5 +70,22 @@ class PointController extends Controller
         $user->save();
         return response()->json(['status'=>200,'data'=>$user,'message'=>'Added successfully']);
 
+    }
+    public function consume(Request $request){
+        $consume=new Consumption;
+        $consume->points=$request->json('points');
+        $consume->userId=$request->json('userId');
+        $consume->itemId=$request->json('itemId');
+        $consume->businessId=$request->json('businessId');
+        $consume->save();
+        return response()->json(['status'=>200,'message'=>'Stored successfully']);
+    }
+    public function getConsumes(Request $request){
+        $consumes=Consumption::where('userId',$request->json('userId'))->get();
+        foreach ($consumes as $key => $value) {
+            $value->setAttribute('item',Item::find($value->itemId));
+            $value->setAttribute('business',Business::find($value->businessId));
+        }
+        return response()->json(['status'=>200,'data'=>$consumes]);
     }
 }
