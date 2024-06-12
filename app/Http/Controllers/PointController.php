@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Consumption;
 use App\Models\Item;
 use App\Models\Business;
+use App\Models\Count;
 class PointController extends Controller
 {
     public function index(Request $request){
@@ -66,9 +67,20 @@ class PointController extends Controller
         }
         $pp=$point->price/$point->points;
         $tp=$request->json('price')/$pp;
-        $user->points=$tp;
-        $user->save();
-        return response()->json(['status'=>200,'data'=>$user,'message'=>'Added successfully']);
+        $exists=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->exists();
+        if($exists==false){
+            $count=new Count;
+            $count->userId=$user->id;
+            $count->businessId=$request->json('businessId');
+            $count->points=$tp;
+            $count->save();
+        }
+        if($exists==true){
+            $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->first();
+            $count->points=$count->points+$tp;
+            $count->save();
+        }
+        return response()->json(['status'=>200,'message'=>'Added successfully']);
 
     }
     public function consume(Request $request){
@@ -87,5 +99,9 @@ class PointController extends Controller
             $value->setAttribute('business',Business::find($value->businessId));
         }
         return response()->json(['status'=>200,'data'=>$consumes]);
+    }
+    public function getUserPoints(Request $request){
+        $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->first();
+        return response()->json(['status'=>200,'data'=>$count]);
     }
 }
