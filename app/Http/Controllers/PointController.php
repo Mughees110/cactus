@@ -11,8 +11,8 @@ use App\Models\Business;
 class PointController extends Controller
 {
     public function index(Request $request){
-    	$points=Point::where('businessId',$request->json('businessId'))->get();
-    	return response()->json(['status'=>200,'data'=>$points]);
+    	$point=Point::where('businessId',$request->json('businessId'))->first();
+    	return response()->json(['status'=>200,'data'=>$point]);
     }
     public function store(Request $request){
     	if(empty($request->json('businessId'))){
@@ -64,8 +64,8 @@ class PointController extends Controller
         if(!$user){
             return response()->json(['status'=>401,'message'=>'user does not exists']);
         }
-        $pp=$point->points/$point->price;
-        $tp=$request->json('price')*$pp;
+        $pp=$point->price/$point->points;
+        $tp=$request->json('price')/$pp;
         $user->points=$tp;
         $user->save();
         return response()->json(['status'=>200,'data'=>$user,'message'=>'Added successfully']);
