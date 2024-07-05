@@ -101,6 +101,8 @@ class BusinessController extends Controller
                 $result= ($res*$radius)*1.60934;
                 $value->setAttribute('distance',$result);
             }
+            $cat=Category::find($value->categoryId);
+            $value->setAttribute('category',$cat);
         }
         return response()->json(['status'=>200,'data'=>$bs]);
     }
