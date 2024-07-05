@@ -38,6 +38,7 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('get-user-points','App\Http\Controllers\PointController@getUserPoints');
 
 	Route::post('businesses-get','App\Http\Controllers\BusinessController@index');
+	Route::post('businesses-get2','App\Http\Controllers\BusinessController@index2');
 
 	Route::post('items-store','App\Http\Controllers\ItemController@store');
 	Route::post('items-update','App\Http\Controllers\ItemController@update');
