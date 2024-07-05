@@ -125,7 +125,8 @@ class AuthController extends Controller
             return response()->json(['status'=>200,'data'=>$user,'exists'=>'no']);
         }
         $user=User::where('email',$request->json('email'))->first();
-        return response()->json(['status'=>200,'data'=>$user,'exists'=>'yes']);
+        $token = $user->createToken('auth_token')->plainTextToken;
+        return response()->json(['status'=>200,'data'=>$user,'exists'=>'yes','token'=>$token]);
     }
 
 }
