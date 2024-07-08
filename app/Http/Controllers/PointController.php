@@ -67,19 +67,15 @@ class PointController extends Controller
         }
         $pp=$point->price/$point->points;
         $tp=$request->json('price')/$pp;
-        $exists=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->exists();
-        if($exists==false){
+        
             $count=new Count;
             $count->userId=$user->id;
             $count->businessId=$request->json('businessId');
             $count->points=$tp;
+            $count->price=$request->json('price');
             $count->save();
-        }
-        if($exists==true){
-            $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->first();
-            $count->points=$count->points+$tp;
-            $count->save();
-        }
+        
+        
         return response()->json(['status'=>200,'message'=>'Added successfully']);
 
     }
@@ -104,4 +100,82 @@ class PointController extends Controller
         $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->first();
         return response()->json(['status'=>200,'data'=>$count]);
     }
+    public function purchasesAgainstBusiness(Request $request){
+        if(empty($request->json('businessId'))){
+            return response()->json(['status'=>'businessId required']);
+        }
+        $totalCount=Consumption::where('businessId',$request->json('businessId'))->count();
+        $users=User::all();
+        $result=array();
+        foreach ($users as $key => $user) {
+            $single=array();
+            $single['user']=$user;
+            $single['count']=Consumption::where('businessId',$request->json('businessId'))->where('userId',$user->id)->count();
+            $records=Consumption::where('businessId',$request->json('businessId'))->where('userId',$user->id)->get();
+            foreach ($records as $key => $value) {
+                $value->setAttribute('item',Item::find($value->itemId));
+            }
+            $single['records']=$records;
+            array_push($result,$single);
+        }
+        return response()->json(['status'=>200,'userWise'=>$result,'totalCount'=>$totalCount]);
+    }
+    public function countsAgainstBusiness(Request $request){
+        if(empty($request->json('businessId'))){
+            return response()->json(['status'=>'businessId required']);
+        }
+        $totalCount=0;
+        $recs=Count::where('businessId',$request->json('businessId'))->get();
+        foreach ($recs as $key => $value) {
+            $totalCount=$totalCount+$value->points;
+        }
+        $totalCount2=0;
+        foreach ($recs as $key => $value) {
+            $totalCount=$totalCount+$value->price;
+        }
+        $users=User::all();
+        $result=array();
+        foreach ($users as $key => $user) {
+            $single=array();
+            $single['user']=$user;
+            $userCount=0;
+            $rs=Count::where('businessId',$request->json('businessId'))->where('userId',$user->id)->get();
+            foreach ($rs as $key => $r) {
+                $userCount=$userCount+$r->points;
+            }
+            $single['count']=$userCount;
+            $records=Count::where('businessId',$request->json('businessId'))->where('userId',$user->id)->get();
+            
+            $single['records']=$records;
+            
+            array_push($result,$single);
+            
+        }
+        return response()->json(['status'=>200,'userWise'=>$result,'totalCountPoints'=>$totalCount,'totalCountPrice'=>$totalCount2]);
+    }
+    public function consumesAgainstBusiness(Request $request){
+        if(empty($request->json('businessId'))){
+            return response()->json(['status'=>'businessId required']);
+        }
+        $totalCount=0;
+        $recs=Consumption::where('businessId',$request->json('businessId'))->get();
+        foreach ($recs as $key => $value) {
+            $totalCount=$totalCount+$value->points;
+        }
+        $items=Item::where('businessId',$request->json('businessId'))->get();
+        foreach ($items as $key => $valuet) {
+            $valuet->setAttribute('count',Consumption::where('itemId',$valuet->id)->where('businessId',$request->json('businessId'))->count());
+        }
+        $users=User::all();
+        $result=array();
+        foreach ($users as $key => $user) {
+            $single=array();
+            $single['user']=$user;
+            $records=Consumption::where('businessId',$request->json('businessId'))->where('userId',$user->id)->get();
+            $single['records']=$records;
+            array_push($result,$single);
+        }
+        return response()->json(['status'=>200,'itemWise'=>$items,'totalPointConsumption'=>$totalCount,'userWise'=>$result]);
+    }
+
 }

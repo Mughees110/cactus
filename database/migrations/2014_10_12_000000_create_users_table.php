@@ -19,6 +19,8 @@ return new class extends Migration
             $table->string('phone')->nullable();
             $table->string('picture')->nullable();
             $table->string('points')->nullable();
+            $table->string('latitude')->nullable();
+            $table->string('latitude')->nullable();
             $table->string('role');
             $table->rememberToken();
             $table->timestamps();

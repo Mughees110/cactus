@@ -109,6 +109,50 @@ class AuthController extends Controller
 
         return response()->json(['message' => 'Successfully logged out']);
     }
+    public function update(Request $request)
+    {
+        try {
+            $exists=User::where('id',$request->get('userId'))->exists();
+            if($exists==true){
+                return response()->json(['status'=>401,'message'=>'User does not exists']);
+            }
+            $user=User::find($request->get('userId'))
+            DB::beginTransaction();
+            if(!empty($request->get('name'))){
+                $user->name=$request->get('name');
+            }
+            if(!empty($request->get('phone'))){
+                $user->phone=$request->get('phone');
+            }
+            if(!empty($request->get('latitude'))){
+                $user->latitude=$request->get('latitude');
+            }
+            if(!empty($request->get('longitude'))){
+                $user->longitude=$request->get('longitude');
+            }
+            $image=Input::file("image");
+            if(!empty($image)){
+                $newFilename=$image->getClientOriginalName();
+                $destinationPath='files';
+                $image->move($destinationPath,$newFilename);
+                $picPath='files/' . $newFilename;
+                $user->picture=encrypt($picPath);
+            }
+            $user->save();
+            DB::commit();
+
+            return response()->json(['status'=>200,'data'=>$user,'message'=>'Updated successfully']);
+
+        } catch (\Exception $e) {
+            Log::error('User updation failed: ' . $e->getMessage());
+
+            DB::rollBack();
+            
+            return response()->json([
+                'message' => 'User updation failed'.$e->getMessage(),
+            ], 422);
+        }
+    }
     public function gmail(Request $request){
         if(empty($request->json('email'))){
             return response()->json(['status'=>401,'message'=>'email is required']);

@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('points');
             $table->string('userId');
             $table->string('businessId');
+            $table->string('price');
             $table->timestamps();
         });
     }
