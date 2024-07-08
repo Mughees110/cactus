@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('picture')->nullable();
             $table->string('points')->nullable();
             $table->string('latitude')->nullable();
-            $table->string('latitude')->nullable();
+            $table->string('longitude')->nullable();
             $table->string('role');
             $table->rememberToken();
             $table->timestamps();
