@@ -116,7 +116,7 @@ class AuthController extends Controller
             if($exists==true){
                 return response()->json(['status'=>401,'message'=>'User does not exists']);
             }
-            $user=User::find($request->get('userId'))
+            $user=User::find($request->get('userId'));
             DB::beginTransaction();
             if(!empty($request->get('name'))){
                 $user->name=$request->get('name');
@@ -136,7 +136,7 @@ class AuthController extends Controller
                 $destinationPath='files';
                 $image->move($destinationPath,$newFilename);
                 $picPath='files/' . $newFilename;
-                $user->picture=encrypt($picPath);
+                $user->picture=$picPath;
             }
             $user->save();
             DB::commit();
