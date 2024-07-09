@@ -113,7 +113,7 @@ class AuthController extends Controller
     {
         try {
             $exists=User::where('id',$request->get('userId'))->exists();
-            if($exists==true){
+            if($exists==false){
                 return response()->json(['status'=>401,'message'=>'User does not exists']);
             }
             $user=User::find($request->get('userId'));
