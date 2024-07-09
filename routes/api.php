@@ -21,6 +21,7 @@ Route::post('register','App\Http\Controllers\AuthController@register');
 Route::post('gmail','App\Http\Controllers\AuthController@gmail');
 Route::post('login','App\Http\Controllers\AuthController@login');
 Route::post('categories-get','App\Http\Controllers\CategoryController@index');
+Route::post('update','App\Http\Controllers\AuthController@update');
 Route::middleware('auth:sanctum')->group(function () {
 	
 	Route::post('categories-store','App\Http\Controllers\CategoryController@store');
@@ -40,7 +41,7 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('purchases-against-business','App\Http\Controllers\PointController@purchasesAgainstBusiness');
 	Route::post('counts-against-business','App\Http\Controllers\PointController@countsAgainstBusiness');
 	Route::post('consumes-against-business','App\Http\Controllers\PointController@consumesAgainstBusiness');
-	
+
 
 	Route::post('businesses-get','App\Http\Controllers\BusinessController@index');
 	Route::post('businesses-get2','App\Http\Controllers\BusinessController@index2');
