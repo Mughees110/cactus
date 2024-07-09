@@ -166,7 +166,8 @@ class AuthController extends Controller
             $user->password="123456";
             
             $user->save();
-            return response()->json(['status'=>200,'data'=>$user,'exists'=>'no']);
+            $token = $user->createToken('auth_token')->plainTextToken;
+            return response()->json(['status'=>200,'data'=>$user,'exists'=>'no','token'=>$token]);
         }
         $user=User::where('email',$request->json('email'))->first();
         $token = $user->createToken('auth_token')->plainTextToken;
