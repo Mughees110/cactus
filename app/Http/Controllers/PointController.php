@@ -158,7 +158,7 @@ class PointController extends Controller
             return response()->json(['status'=>'businessId required']);
         }
         $totalCount=0;
-        $recs=Count::where('businessId',$request->json('businessId'))->whereBetween('created_at',[$request->json('from'),$request->json('to')])->get();
+        $recs=Count::where('businessId',$request->json('businessId'))->whereBetween('created_at',[$request->json('from'),$request->json('to')])->orderBy('created_at','desc')->get();
         foreach ($recs as $key => $value) {
             $totalCount=$totalCount+$value->points;
         }
