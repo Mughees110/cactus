@@ -40,6 +40,7 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('purchases-against-business','App\Http\Controllers\PointController@purchasesAgainstBusiness');
 	Route::post('counts-against-business','App\Http\Controllers\PointController@countsAgainstBusiness');
+	Route::post('counts-against-business2','App\Http\Controllers\PointController@countsAgainstBusiness2');
 	Route::post('consumes-against-business','App\Http\Controllers\PointController@consumesAgainstBusiness');
 
 
