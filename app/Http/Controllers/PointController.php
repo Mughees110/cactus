@@ -131,7 +131,7 @@ class PointController extends Controller
         }
         $totalCount2=0;
         foreach ($recs as $key => $value) {
-            $totalCount=$totalCount+$value->price;
+            $totalCount2=$totalCount2+$value->price;
         }
         $users=User::all();
         $result=array();
