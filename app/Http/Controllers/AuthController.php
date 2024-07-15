@@ -173,5 +173,9 @@ class AuthController extends Controller
         $token = $user->createToken('auth_token')->plainTextToken;
         return response()->json(['status'=>200,'data'=>$user,'exists'=>'yes','token'=>$token]);
     }
+    public function getAllUsers(Request $request){
+        $users=User::all();
+        return response()->json(['status'=>200,'data'=>$users]);
+    }
 
 }

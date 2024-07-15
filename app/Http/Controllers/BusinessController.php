@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Business;
 use App\Models\Category;
+use App\Models\Count;
+use App\Models\Consumption;
 use Input;
 class BusinessController extends Controller
 {
@@ -72,6 +74,20 @@ class BusinessController extends Controller
                         $result= ($res*$radius)*1.60934;
                         $value->setAttribute('distance',$result);
                     }
+                    if(!empty($request->json('userId'))){
+                        $csum=Count::where('businessId',$value->id)->where('userId',$request->json('userId'))->get();
+                        $countPoints=0;
+                        foreach ($csum as $keycs => $valuecs) {
+                            $countPoints=$countPoints+$valuecs->points;
+                        }
+                        $cosum=Consumption::where('businessId',$value->id)->where('userId',$request->json('userId'))->get();
+                        $countConsumes=0;
+                        foreach ($cosum as $keycos => $valuecos) {
+                            $countConsumes=$countConsumes+$valuecos->points;
+                        }
+                        $value->setAttribute('pointsGiven',$countPoints);
+                        $value->setAttribute('pointsConsumed',$countConsumes);
+                    }
                 }
                 $valueC->setAttribute('businesses',$bs);
             
@@ -103,6 +119,12 @@ class BusinessController extends Controller
             }
             $cat=Category::find($value->categoryId);
             $value->setAttribute('category',$cat);
+            $csum=Count::where('businessId',$value->id)->get();
+            $countPoints=0;
+            foreach ($csum as $keycs => $valuecs) {
+                $countPoints=$countPoints+$valuecs->points;
+            }
+            $value->setAttribute('pointsGiven',$countPoints);
         }
         return response()->json(['status'=>200,'data'=>$bs]);
     }

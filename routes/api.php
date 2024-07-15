@@ -56,6 +56,13 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('discounts-get','App\Http\Controllers\DiscountController@index');
 	Route::post('discounts-delete','App\Http\Controllers\DiscountController@delete');
 
+	Route::post('promos-store','App\Http\Controllers\PromoController@store');
+	Route::post('promos-update','App\Http\Controllers\PromoController@update');
+	Route::post('promos-get','App\Http\Controllers\PromoController@index');
+	Route::post('promos-delete','App\Http\Controllers\PromoController@delete');
+
+	Route::post('get-all-users','App\Http\Controllers\AuthController@getAllUsers');
+
 });
 Route::post('submit-to-calculate','App\Http\Controllers\PointController@submitToCalculate');
 Route::get('invalid',function(){
