@@ -175,6 +175,12 @@ class AuthController extends Controller
     }
     public function getAllUsers(Request $request){
         $users=User::all();
+        foreach ($users as $key => $value) {
+            $ex=Business::where('userId',$value->id)->exists();
+            if($ex==true){
+                $value->setAttribute('business',Business::where('userId',$value->id)->first());
+            }
+        }
         return response()->json(['status'=>200,'data'=>$users]);
     }
 
