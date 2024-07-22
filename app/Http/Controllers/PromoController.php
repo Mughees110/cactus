@@ -17,6 +17,7 @@ class PromoController extends Controller
     	$promo->title=$request->get('title');
     	$promo->description=$request->get('description');
     	$promo->price=$request->get('price');
+        $promo->businessId=$request->get('businessId');
     	$image=Input::file("image");
         if(!empty($image)){
             $newFilename=$image->getClientOriginalName();
@@ -39,6 +40,7 @@ class PromoController extends Controller
     	$promo->title=$request->get('title');
     	$promo->description=$request->get('description');
     	$promo->price=$request->get('price');
+        $promo->businessId=$request->get('businessId');
     	$image=Input::file("image");
         if(!empty($image)){
             $newFilename=$image->getClientOriginalName();

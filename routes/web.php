@@ -19,3 +19,4 @@ Route::get('/', function () {
 Route::get('/test', function () {
     dd("test");
 });
+Route::get('test','App\Http\Controllers\AdminController@index');

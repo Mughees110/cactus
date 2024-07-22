@@ -168,6 +168,19 @@ class PointController extends Controller
         }
         return response()->json(['status'=>200,'totalCountPoints'=>$totalCount,'totalCountPrice'=>$totalCount2,'data'=>$recs]);
     }
+    public function consumesAgainstBusiness2(Request $request){
+        if(empty($request->json('businessId'))){
+            return response()->json(['status'=>'businessId required']);
+        }
+        $totalCount=0;
+        $recs=Consumption::where('businessId',$request->json('businessId'))->whereBetween('created_at',[$request->json('from'),$request->json('to')])->orderBy('created_at','desc')->get();
+        
+        foreach ($recs as $key => $value) {
+            $value->setAttribute('item',Item::find($value->itemId));
+            $totalCount=$totalCount+$value->points;
+        }
+        return response()->json(['status'=>200,'totalCountPoints'=>$totalCount,'data'=>$recs]);
+    }
     public function consumesAgainstBusiness(Request $request){
         if(empty($request->json('businessId'))){
             return response()->json(['status'=>'businessId required']);
