@@ -29,7 +29,8 @@ Route::middleware('auth:sanctum')->group(function () {
 	
 	Route::post('categories-delete','App\Http\Controllers\CategoryController@delete');
 	Route::post('business-update','App\Http\Controllers\BusinessController@update');
-
+	Route::post('business-approve','App\Http\Controllers\BusinessController@businessApprove');
+	Route::post('business-reject','App\Http\Controllers\BusinessController@businessReject');
 	Route::post('points-store','App\Http\Controllers\PointController@store');
 	Route::post('points-update','App\Http\Controllers\PointController@update');
 	Route::post('points-get','App\Http\Controllers\PointController@index');

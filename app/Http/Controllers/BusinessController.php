@@ -46,6 +46,7 @@ class BusinessController extends Controller
         $business->address=$request->get('address');
         $business->latitude=$request->get('latitude');
         $business->longitude=$request->get('longitude');
+        $business->status="pending";
         $business->save();
         return response()->json(['status'=>200,'message'=>'updated successfully','data'=>$business]);
     }
@@ -127,6 +128,18 @@ class BusinessController extends Controller
             $value->setAttribute('pointsGiven',$countPoints);
         }
         return response()->json(['status'=>200,'data'=>$bs]);
+    }
+    public function businessApprove(Request $request){
+        $business=Business::find($request->json('businessId'));
+        $business->status="approved";
+        $business->save();
+        return response()->json(['status'=>200,'message'=>'approved successfully']);
+    }
+    public function businessReject(Request $request){
+        $business=Business::find($request->json('businessId'));
+        $business->status="rejected";
+        $business->save();
+        return response()->json(['status'=>200,'message'=>'rejected successfully']);
     }
     
 }
