@@ -8,7 +8,13 @@ use App\Models\Promo;
 class PromoController extends Controller
 {
     public function index(Request $request){
-    	$points=Promo::all();
+        if(empty($request->json('businessId'))){
+    	   $points=Promo::all();
+        }
+        if(!empty($request->json('businessId'))){
+           $points=Promo::where('businessId',$request->json('businessId'))->get(
+           );
+        }
     	return response()->json(['status'=>200,'data'=>$points]);
     }
     public function store(Request $request){

@@ -1,0 +1,80 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use Stripe\Stripe;
+use Stripe\Customer;
+use Stripe\Charge;
+
+class PaymentController extends Controller
+{
+    public function createCharge(Request $request)
+    {
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        $request->validate([
+            'token' => 'required|string',
+            'amount' => 'required|integer', // Amount in cents
+        ]);
+
+        try {
+            // Create a customer
+            $customer = Customer::create([
+                'description' => 'Customer for example',
+                'source' => $request->token,
+            ]);
+
+            // Save customer ID in your database
+            // Example: $user->stripe_customer_id = $customer->id;
+            // $user->save();
+
+            // Charge the customer
+            $charge = Charge::create([
+                'amount' => $request->amount,
+                'currency' => 'usd',
+                'description' => 'Example charge',
+                'customer' => $customer->id,
+            ]);
+
+            return response()->json(['status' => 'success', 'charge' => $charge,'customer'=>$customer]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+
+    public function chargeCustomer(Request $request)
+    {
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+
+        try {
+            $charge = Charge::create([
+                'amount' => 100,
+                'currency' => 'usd',
+                'description' => 'Example charge',
+                'customer' => "cus_QY0iKeYenOlmxM",
+            ]);
+
+            return response()->json(['status' => 'success', 'charge' => $charge]);
+        } catch (\Exception $e) {
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+    public function getChargeDetails()
+    {
+        // Set your secret key. Remember to switch to your live secret key in production!
+        Stripe::setApiKey(config('services.stripe.secret'));
+
+        try {
+            // Retrieve the charge details using the charge ID
+            $charge = Charge::retrieve("ch_3PgujTKiAN37OnJd0OwXE6Gb");
+
+            // Return the charge details as a JSON response
+            return response()->json(['status' => 'success', 'charge' => $charge]);
+        } catch (\Exception $e) {
+            // Handle any errors that occur
+            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+        }
+    }
+}

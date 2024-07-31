@@ -183,5 +183,25 @@ class AuthController extends Controller
         }
         return response()->json(['status'=>200,'data'=>$users]);
     }
+    public function deleteUser(Request $request){
+        $user=User::find($request->json('userId'));
+        if(!$user){
+            return response()->json(['status'=>401,'message'=>'user not found']);
+        }
+        $user->delete();
+        $business=Business::where('userId',$request->json('userId'))->first();
+        if($business){
+            $business->delete();
+        }
+        return response()->json(['status'=>200,'message'=>'deleted successfully']);
+    }
+    public function deleteBusiness(Request $request){
+        $user=Business::find($request->json('businessId'));
+        if(!$user){
+            return response()->json(['status'=>401,'message'=>'business not found']);
+        }
+        $user->delete();
+        return response()->json(['status'=>200,'message'=>'deleted successfully']);
+    }
 
 }

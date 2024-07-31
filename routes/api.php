@@ -22,6 +22,8 @@ Route::post('gmail','App\Http\Controllers\AuthController@gmail');
 Route::post('login','App\Http\Controllers\AuthController@login');
 Route::post('categories-get','App\Http\Controllers\CategoryController@index');
 Route::post('update','App\Http\Controllers\AuthController@update');
+Route::post('delete-user','App\Http\Controllers\AuthController@deleteUser');
+Route::post('delete-business','App\Http\Controllers\AuthController@deleteBusiness');
 Route::middleware('auth:sanctum')->group(function () {
 	
 	Route::post('categories-store','App\Http\Controllers\CategoryController@store');

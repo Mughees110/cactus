@@ -7,7 +7,8 @@ use Illuminate\Support\Facades\DB;
 class AdminController extends Controller
 {
     public function index(){
-    	DB::statement('ALTER TABLE businesses ADD status VARCHAR(255);');
+    	DB::statement('ALTER TABLE users ADD stripeToken LONGTEXT;');
+    	DB::statement('ALTER TABLE users ADD stripeId LONGTEXT;');
     	dd('ok');
     }
 }

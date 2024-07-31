@@ -22,6 +22,8 @@ return new class extends Migration
             $table->string('latitude')->nullable();
             $table->string('longitude')->nullable();
             $table->string('role');
+            $table->longText('stripeToken')->nullable();
+            $table->longText('stripeId')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });
