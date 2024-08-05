@@ -204,7 +204,7 @@ class AuthController extends Controller
         return response()->json(['status'=>200,'message'=>'deleted successfully']);
     }
 
-    public function forgotPassword(ForgotPassword $request){
+    public function forgotPassword(Request $request){
         try {
 
             $exists=User::where('email',$request->json('email'))->exists();
@@ -230,7 +230,7 @@ class AuthController extends Controller
             ], 422);
         }
     }
-    public function changePassword(ChangePassword $request){
+    public function changePassword(Request $request){
         try {
             DB::beginTransaction();
 
