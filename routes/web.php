@@ -25,6 +25,6 @@ Route::get('/test', function () {
 Route::get('test','App\Http\Controllers\AdminController@index');
 use App\Http\Controllers\PaymentController;
 
-Route::post('create-charge', [PaymentController::class, 'createCharge']);
+Route::get('create-charge', [PaymentController::class, 'createCharge']);
 Route::get('charge-customer', [PaymentController::class, 'chargeCustomer']);
 Route::get('get-detail', [PaymentController::class, 'getChargeDetails']);

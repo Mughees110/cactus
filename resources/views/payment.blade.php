@@ -48,7 +48,7 @@
                     var amount = 5000; // Example amount in cents ($50.00)
                     console.log(token);
                     fetch('/create-charge', {
-                        method: 'POST',
+                        method: 'GET',
                         headers: {
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
