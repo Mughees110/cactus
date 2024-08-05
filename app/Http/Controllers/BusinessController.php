@@ -121,6 +121,10 @@ class BusinessController extends Controller
             }
             $cat=Category::find($value->categoryId);
             $value->setAttribute('category',$cat);
+            $user=User::find($value->userId);
+            if($user){
+                $value->setAttribute('user',$user);
+            }
             $csum=Count::where('businessId',$value->id)->get();
             $countPoints=0;
             foreach ($csum as $keycs => $valuecs) {
@@ -134,7 +138,7 @@ class BusinessController extends Controller
         $business=Business::find($request->json('businessId'));
         $business->status="approved";
         $business->save();
-        $user=User::where('businessId',$request->json('businessId'))->first();
+        $user=User::find($business->userId);
         if($user){
             $email=$user->email;
             
