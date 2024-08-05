@@ -213,6 +213,7 @@ class AuthController extends Controller
                     'message' => 'Email does not belong to any user',
                 ], 422);
             }
+            $email=$request->json('email');
             $otp=rand(1111,8888);
             Mail::send('mail',['otp'=>$otp], function($message) use($email){
                      $message->to($email)->subject('Cactus');
