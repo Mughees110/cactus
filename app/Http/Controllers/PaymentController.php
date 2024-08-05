@@ -59,7 +59,7 @@ class PaymentController extends Controller
             ]);*/
             
 
-            return response()->json(['message'=>'success']);
+            return response()->json(['message'=>'Card Information stored successfully']);
         } catch (\Exception $e) {
             $message=$e->getMessage();
             return response()->json(['message'=>$message]);

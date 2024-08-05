@@ -26,7 +26,7 @@
         </div>
             </div>
         </div>
-        <div id="success-message"></div>
+        <div id="success-message" style="text-align: center;"></div>
         <div id="error-message"></div>
     </form>
 
