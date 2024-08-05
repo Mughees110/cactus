@@ -6,17 +6,32 @@ use Illuminate\Http\Request;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
-
+use App\Models\User;
 class PaymentController extends Controller
 {
     public function createCharge(Request $request)
     {
         Stripe::setApiKey(config('services.stripe.secret'));
-
-        $request->validate([
+        if(!$request->token){
+            $message='Unable to create stripe token';
+            return response()->json(['message'=>$message]);
+        }
+        if(!$request->userId){
+            $message='Unable to get userId';
+            return response()->json(['message'=>$message]);
+        }
+        
+        /*$request->validate([
             'token' => 'required|string',
-            'amount' => 'required|integer', // Amount in cents
-        ]);
+            'amount' => 'required|integer',
+            'userId'=>'required' // Amount in cents
+        ]);*/
+        $user=User::find($request->userId);
+        if(!$user){
+            $message="User not found";
+            return response()->json(['message'=>$message]);
+        }
+        $user->stripeToken=$request->token;
 
         try {
             // Create a customer
@@ -24,22 +39,30 @@ class PaymentController extends Controller
                 'description' => 'Customer for example',
                 'source' => $request->token,
             ]);
+            if(!$customer||!$customer->id){
+                return response()->json(['message'=>'Unable to create customer']);
+            }
+            $user->stripeId=$customer->id;
+            $user->save();
+
 
             // Save customer ID in your database
             // Example: $user->stripe_customer_id = $customer->id;
             // $user->save();
 
             // Charge the customer
-            $charge = Charge::create([
+            /*$charge = Charge::create([
                 'amount' => $request->amount,
                 'currency' => 'usd',
                 'description' => 'Example charge',
                 'customer' => $customer->id,
-            ]);
+            ]);*/
+            
 
-            return response()->json(['status' => 'success', 'charge' => $charge,'customer'=>$customer]);
+            return response()->json(['message'=>'success']);
         } catch (\Exception $e) {
-            return response()->json(['status' => 'error', 'message' => $e->getMessage()]);
+            $message=$e->getMessage();
+            return response()->json(['message'=>$message]);
         }
     }
 

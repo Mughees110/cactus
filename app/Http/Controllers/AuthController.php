@@ -204,4 +204,58 @@ class AuthController extends Controller
         return response()->json(['status'=>200,'message'=>'deleted successfully']);
     }
 
+    public function forgotPassword(ForgotPassword $request){
+        try {
+
+            $exists=User::where('email',$request->json('email'))->exists();
+            if($exists==false){
+                return response()->json([
+                    'message' => 'Email does not belong to any user',
+                ], 422);
+            }
+            $otp=rand(1111,8888);
+            Mail::send('mail',['otp'=>$otp], function($message) use($email){
+                     $message->to($email)->subject('Cactus');
+                     $message->from('carlos@cacturaconcactus.com');
+                    });
+            
+            return response()->json(['otp' => $otp]);
+
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Forgot Password Failed: ' . $e->getMessage());
+            // Return a JSON response with an error message
+            return response()->json([
+                'message' => 'Unable to send email to your email address '.$e->getMessage(),
+            ], 422);
+        }
+    }
+    public function changePassword(ChangePassword $request){
+        try {
+            DB::beginTransaction();
+
+            $exists=User::where('email',$validatedData['email'])->exists();
+            if($exists==false){
+                return response()->json([
+                    'message' => 'Email does not belong to any user',
+                ], 422);
+            }
+            $user=User::where('email',$request->json('email'))->first();
+            $user->password=Hash::make($request->json('password'));
+            $user->save();
+
+            DB::commit();
+            return response()->json(['message' => 'Password changed Successfully']);
+
+        } catch (\Exception $e) {
+            // Log the error
+            Log::error('Change Password Failed: ' . $e->getMessage());
+            // Return a JSON response with an error message
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Unable to change password'.$e->getMessage(),
+            ], 422);
+        }
+    }
+
 }

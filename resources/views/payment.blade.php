@@ -11,6 +11,7 @@
     <form id="payment-form">
         <div id="card-element"></div>
         <button id="submit">Pay</button>
+        <div id="success-message"></div>
         <div id="error-message"></div>
     </form>
 
@@ -19,6 +20,7 @@
         var elements = stripe.elements();
         var cardElement = elements.create('card');
         cardElement.mount('#card-element');
+        var userId=<?php echo $userId ?>
 
         var form = document.getElementById('payment-form');
         form.addEventListener('submit', function(event) {
@@ -36,11 +38,12 @@
                             'Content-Type': 'application/json',
                             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
                         },
-                        body: JSON.stringify({ token: token, amount: amount })
+                        body: JSON.stringify({ token: token, amount: amount,userId:userId })
                     }).then(function(response) {
                         return response.json();
                     }).then(function(data) {
-                        console.log(data);
+                        console.log(data.message);
+                        document.getElementById('success-message').textContent =data.message;
                     });
                 }
             });

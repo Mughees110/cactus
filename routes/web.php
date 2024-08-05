@@ -16,8 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::get('/payment', function () {
-    return view('payment');
+Route::get('/payment/{userId}', function ($userId) {
+    return view('payment',compact('userId'));
 });
 Route::get('/test', function () {
     dd("test");
