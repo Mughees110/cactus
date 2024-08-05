@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Business;
+use App\Models\User;
 use App\Models\Category;
 use App\Models\Count;
 use App\Models\Consumption;
@@ -133,6 +134,15 @@ class BusinessController extends Controller
         $business=Business::find($request->json('businessId'));
         $business->status="approved";
         $business->save();
+        $user=User::where('businessId',$request->json('businessId'))->first();
+        if($user){
+            $email=$user->email;
+            
+            Mail::send('mail2',[], function($message) use($email){
+                     $message->to($email)->subject('¡Aprobado po');
+                     $message->from('carlos@cacturaconcactus.com');
+                    });
+        }
         return response()->json(['status'=>200,'message'=>'approved successfully']);
     }
     public function businessReject(Request $request){
