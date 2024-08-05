@@ -47,7 +47,7 @@
                     var token = result.token.id;
                     var amount = 5000; // Example amount in cents ($50.00)
                     console.log(token);
-                    fetch('/create-charge', {
+                    fetch('/api/create-charge', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
