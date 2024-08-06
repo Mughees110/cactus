@@ -1,1 +1,4 @@
-<p style="display: flex;align-items: center;justify-content: center;">¡La información de la tarjeta se almacenó exitosamente!</p>
+<p style="display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center;     /* Centers vertically */
+    height: 100vh;">¡La información de la tarjeta se almacenó exitosamente!</p>
