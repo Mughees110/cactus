@@ -60,7 +60,6 @@
                         console.log(data.message);
                         window.location.href = '/success';
 
-                        document.getElementById('success-message').textContent =data.message;
                     });
                 }
             });

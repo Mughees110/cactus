@@ -1,1 +1,1 @@
-<p>Thank you very much</p>
+<p style="display: flex;align-items: center;justify-content: center;">¡La información de la tarjeta se almacenó exitosamente!</p>
