@@ -235,7 +235,7 @@ class AuthController extends Controller
         try {
             DB::beginTransaction();
 
-            $exists=User::where('email',$validatedData['email'])->exists();
+            $exists=User::where('email',$request->json('email'))->exists();
             if($exists==false){
                 return response()->json([
                     'message' => 'Email does not belong to any user',

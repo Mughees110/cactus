@@ -22,7 +22,7 @@
                         <div id="card-element"></div>
                     </div>
 
-        <button id="submit">Pay</button>
+        <button id="submit">Subscribe</button>
         </div>
             </div>
         </div>
