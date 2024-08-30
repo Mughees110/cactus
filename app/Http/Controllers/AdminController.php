@@ -10,7 +10,8 @@ class AdminController extends Controller
 {
     public function index(){
     	
-    	DB::statement('ALTER TABLE users ADD stripeToken LONGTEXT;');
+    	DB::statement('ALTER TABLE businesses ADD insta VARCHAR(255);');
+    	dd('ok');
     	DB::statement('ALTER TABLE users ADD stripeId LONGTEXT;');
     	dd('ok');
     }

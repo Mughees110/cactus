@@ -24,6 +24,7 @@ return new class extends Migration
             $table->text('image2')->nullable();
             $table->string('userId');
             $table->string('status');
+            $table->string('insta')->nullable();
             $table->timestamps();
         });
     }

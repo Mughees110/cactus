@@ -47,6 +47,7 @@ class BusinessController extends Controller
         $business->address=$request->get('address');
         $business->latitude=$request->get('latitude');
         $business->longitude=$request->get('longitude');
+        $business->insta=$request->get('insta');
         $business->status="pending";
         $business->save();
         return response()->json(['status'=>200,'message'=>'updated successfully','data'=>$business]);
