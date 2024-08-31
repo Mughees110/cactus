@@ -65,7 +65,7 @@ class PromoController extends Controller
     		return response()->json(['status'=>401,'message'=>'promoId is required']);
     	}
     	$promo=Promo::find($request->json('promoId'));
-    	if(!$item){
+    	if(!$promo){
     		return response()->json(['status'=>401,'message'=>'promo does not exists']);
     	}
     	$promo->delete();
