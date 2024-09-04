@@ -9,6 +9,7 @@ use App\Models\Category;
 use App\Models\Count;
 use App\Models\Consumption;
 use Input;
+use Mail;
 class BusinessController extends Controller
 {
 
