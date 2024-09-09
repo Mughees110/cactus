@@ -69,6 +69,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('get-all-users','App\Http\Controllers\AuthController@getAllUsers');
 
+	Route::post('rate','App\Http\Controllers\RatingController@rating');
+
 });
 Route::post('submit-to-calculate','App\Http\Controllers\PointController@submitToCalculate');
 Route::get('invalid',function(){

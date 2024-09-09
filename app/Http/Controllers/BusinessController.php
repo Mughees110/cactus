@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Models\Category;
 use App\Models\Count;
 use App\Models\Consumption;
+use App\Models\Rating;
 use Input;
 use Mail;
 class BusinessController extends Controller
@@ -92,6 +93,12 @@ class BusinessController extends Controller
                         $value->setAttribute('pointsGiven',$countPoints);
                         $value->setAttribute('pointsConsumed',$countConsumes);
                     }
+
+                    $ratings=Rating::where('businessId',$value->id)->get();
+                    foreach ($ratings as $key => $val) {
+                        $value->setAttribute('user',User::find($val->userId));
+                    }
+                    $value->setAttribute('ratings',$ratings);
                 }
                 $valueC->setAttribute('businesses',$bs);
             
@@ -133,6 +140,11 @@ class BusinessController extends Controller
                 $countPoints=$countPoints+$valuecs->points;
             }
             $value->setAttribute('pointsGiven',$countPoints);
+            $ratings=Rating::where('businessId',$value->id)->get();
+            foreach ($ratings as $key => $val) {
+                $value->setAttribute('user',User::find($val->userId));
+            }
+            $value->setAttribute('ratings',$ratings);
         }
         return response()->json(['status'=>200,'data'=>$bs]);
     }
