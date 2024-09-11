@@ -169,5 +169,12 @@ class BusinessController extends Controller
         $business->save();
         return response()->json(['status'=>200,'message'=>'rejected successfully']);
     }
+    public function getRating(Request $request){
+        $ratings=Rating::where('businessId',$request->json('businessId'))->get();
+        foreach ($ratings as $key => $value) {
+            $value->setAttribute('user',User::find($value->userId));
+        }
+        return response()->json(['status'=>200,'data'=>$ratings]);
+    }
     
 }
