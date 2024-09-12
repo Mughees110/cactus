@@ -19,7 +19,7 @@ class CategoryController extends Controller
     	$category->name=$request->get('name');
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;
@@ -39,7 +39,7 @@ class CategoryController extends Controller
     	$category->name=$request->get('name');
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;

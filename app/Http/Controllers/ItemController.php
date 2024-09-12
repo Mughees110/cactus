@@ -22,7 +22,7 @@ class ItemController extends Controller
     	$item->businessId=$request->get('businessId');
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;
@@ -45,7 +45,7 @@ class ItemController extends Controller
     	$item->businessId=$request->get('businessId');
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;

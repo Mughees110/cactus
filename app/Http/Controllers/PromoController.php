@@ -26,7 +26,7 @@ class PromoController extends Controller
         $promo->businessId=$request->get('businessId');
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;
@@ -51,7 +51,7 @@ class PromoController extends Controller
         }
     	$image=Input::file("image");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;
