@@ -29,19 +29,19 @@ class BusinessController extends Controller
     	$business->name=$request->get('name');
     	$image=Input::file("image1");
         if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
+            $newFilename=time().$image->getClientOriginalName();
             $destinationPath='files';
             $image->move($destinationPath,$newFilename);
             $picPath='files/' . $newFilename;
             $business->image1=$picPath;
         }
-        $image=Input::file("image2");
-        if(!empty($image)){
-            $newFilename=$image->getClientOriginalName();
-            $destinationPath='files';
-            $image->move($destinationPath,$newFilename);
-            $picPath='files/' . $newFilename;
-            $business->image2=$picPath;
+        $image2=Input::file("image2");
+        if(!empty($image2)){
+            $newFilename2=time().$image2->getClientOriginalName();
+            $destinationPath2='files';
+            $image2->move($destinationPath2,$newFilename2);
+            $picPath2='files/' . $newFilename2;
+            $business->image2=$picPath2;
         }
         $business->categoryId=$request->get('categoryId');
         $business->province=$request->get('province');
