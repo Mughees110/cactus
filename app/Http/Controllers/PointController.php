@@ -111,7 +111,7 @@ class PointController extends Controller
         foreach ($consumes as $key => $value2) {
             $con=$con+$value2->points;
         }
-        $avail=$coun-$con;
+        $avail=$got-$con;
         return response()->json(['status'=>200,'data'=>$avail]);
 
     }
