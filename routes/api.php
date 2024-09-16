@@ -42,6 +42,7 @@ Route::middleware('auth:sanctum')->group(function () {
 	Route::post('consume','App\Http\Controllers\PointController@consume');
 	Route::post('get-consumes','App\Http\Controllers\PointController@getConsumes');
 	Route::post('get-user-points','App\Http\Controllers\PointController@getUserPoints');
+	Route::post('get-user-available-points','App\Http\Controllers\PointController@getUserAvailablePoints');
 
 	Route::post('purchases-against-business','App\Http\Controllers\PointController@purchasesAgainstBusiness');
 	Route::post('counts-against-business','App\Http\Controllers\PointController@countsAgainstBusiness');

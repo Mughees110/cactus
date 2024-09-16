@@ -97,8 +97,23 @@ class PointController extends Controller
         return response()->json(['status'=>200,'data'=>$consumes]);
     }
     public function getUserPoints(Request $request){
-        $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->first();
+        $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->get();
         return response()->json(['status'=>200,'data'=>$count]);
+    }
+    public function getUserAvailablePoints(Request $request){
+        $got=0;
+        $count=Count::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->get();
+        foreach ($count as $key => $value) {
+            $got=$got+$value->points;
+        }
+        $consumes=Consumption::where('userId',$request->json('userId'))->where('businessId',$request->json('businessId'))->get();
+        $con=0;
+        foreach ($consumes as $key => $value2) {
+            $con=$con+$value2->points;
+        }
+        $avail=$coun-$con;
+        return response()->json(['status'=>200,'data'=>$avail]);
+
     }
     public function purchasesAgainstBusiness(Request $request){
         if(empty($request->json('businessId'))){
