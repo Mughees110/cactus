@@ -12,6 +12,7 @@ class RatingController extends Controller
     	$rating->comment=$request->json('comment');
     	$rating->businessId=$request->json('businessId');
     	$rating->userId=$request->json('userId');
+    	$rating->save();
     	return response()->json(['status'=>200,'message'=>'rated successfully']);
     }
 }
