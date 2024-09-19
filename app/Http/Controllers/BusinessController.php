@@ -60,7 +60,7 @@ class BusinessController extends Controller
         $business->status="pending";
         $business->save();
 
-        $user=User::find($request->get('userId'));
+        /*$user=User::find($request->get('userId'));
         if($user && $user->fcm){
             $fcmToken=$user->fcm;
             $deviceToken = $fcmToken;
@@ -73,7 +73,7 @@ class BusinessController extends Controller
 
             // Send notification and capture the response
             $response = $this->firebaseService->sendNotification($deviceToken, $title, $body, $data);
-        }
+        }*/
         return response()->json(['status'=>200,'message'=>'updated successfully','data'=>$business]);
     }
     public function noti(Request $request){
