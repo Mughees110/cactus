@@ -10,9 +10,7 @@ class AdminController extends Controller
 {
     public function index(){
     	
-    	DB::statement('ALTER TABLE businesses ADD insta VARCHAR(255);');
-    	dd('ok');
-    	DB::statement('ALTER TABLE users ADD stripeId LONGTEXT;');
+    	DB::statement('ALTER TABLE users ADD fcm LONGTEXT;');
     	dd('ok');
     }
 }

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('role');
             $table->longText('stripeToken')->nullable();
             $table->longText('stripeId')->nullable();
+            $table->longText('fcm')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

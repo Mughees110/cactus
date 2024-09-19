@@ -11,9 +11,16 @@ use App\Models\Consumption;
 use App\Models\Rating;
 use Input;
 use Mail;
+
+use App\Services\FirebaseService;
 class BusinessController extends Controller
 {
+    protected $firebaseService;
 
+    public function __construct(FirebaseService $firebaseService)
+    {
+        $this->firebaseService = $firebaseService;
+    }
     public function update(Request $request){
     	if(empty($request->get('userId'))){
     		return response()->json(['status'=>401,'message'=>'userId is required']);
@@ -52,6 +59,21 @@ class BusinessController extends Controller
         $business->insta=$request->get('insta');
         $business->status="pending";
         $business->save();
+
+        $user=User::find($request->get('userId'));
+        if($user && $user->fcm){
+            $fcmToken=$user->fcm;
+            $deviceToken = $fcmToken;
+            $title = 'Cactus';
+            
+            $result=array();
+            $result['business']=$business;
+            
+            $data = $result;
+
+            // Send notification and capture the response
+            $response = $this->firebaseService->sendNotification($deviceToken, $title, $body, $data);
+        }
         return response()->json(['status'=>200,'message'=>'updated successfully','data'=>$business]);
     }
     public function index(Request $request){

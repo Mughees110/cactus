@@ -130,6 +130,9 @@ class AuthController extends Controller
             if(!empty($request->get('longitude'))){
                 $user->longitude=$request->get('longitude');
             }
+            if(!empty($request->get('fcm'))){
+                $user->fcm=$request->get('fcm');
+            }
             $image=Input::file("image");
             if(!empty($image)){
                 $newFilename=$image->getClientOriginalName();
