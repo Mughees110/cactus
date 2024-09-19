@@ -76,6 +76,23 @@ class BusinessController extends Controller
         }
         return response()->json(['status'=>200,'message'=>'updated successfully','data'=>$business]);
     }
+    public function noti(Request $request){
+        $user=User::find($request->json('userId'));
+        if($user && $user->fcm){
+            $fcmToken=$user->fcm;
+            $deviceToken = $fcmToken;
+            $title = 'Cactus';
+            
+            $result=array();
+            $result['message']='Points added successfully';
+            
+            $data = $result;
+
+            // Send notification and capture the response
+            $response = $this->firebaseService->sendNotification($deviceToken, $title, $body, $data);
+        }
+        return response()->json(['status'=>200,'data'=>'sent']);
+    }
     public function index(Request $request){
         $categories=Category::all();
         foreach ($categories as $key => $valueC) {
