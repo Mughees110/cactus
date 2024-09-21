@@ -82,9 +82,9 @@ class BusinessController extends Controller
             $fcmToken=$user->fcm;
             $deviceToken = $fcmToken;
             $title = 'Cactus';
-            
+            $body="Points added successfully";
             $result=array();
-            $result['message']='Points added successfully';
+            //$result['message']='Points added successfully';
             
             $data = $result;
 
