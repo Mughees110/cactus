@@ -22,6 +22,7 @@ Route::post('change-password','App\Http\Controllers\AuthController@changePasswor
 Route::post('register','App\Http\Controllers\AuthController@register');
 Route::post('gmail','App\Http\Controllers\AuthController@gmail');
 Route::post('login','App\Http\Controllers\AuthController@login');
+Route::post('get-user','App\Http\Controllers\AuthController@getUser');
 Route::post('categories-get','App\Http\Controllers\CategoryController@index');
 Route::post('update','App\Http\Controllers\AuthController@update');
 Route::post('delete-user','App\Http\Controllers\AuthController@deleteUser');

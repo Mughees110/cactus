@@ -261,5 +261,9 @@ class AuthController extends Controller
             ], 422);
         }
     }
+    public function getUser(Request $request){
+        $user=User::find($request->json('userId'));
+        return response()->json(['status'=>200,'data'=>$user]);
+    }
 
 }
