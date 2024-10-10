@@ -135,7 +135,7 @@ class BusinessController extends Controller
 
                     $ratings=Rating::where('businessId',$value->id)->get();
                     foreach ($ratings as $key => $val) {
-                        $value->setAttribute('user',User::find($val->userId));
+                        $val->setAttribute('user',User::find($val->userId));
                     }
                     $value->setAttribute('ratings',$ratings);
                 }
@@ -181,7 +181,7 @@ class BusinessController extends Controller
             $value->setAttribute('pointsGiven',$countPoints);
             $ratings=Rating::where('businessId',$value->id)->get();
             foreach ($ratings as $key => $val) {
-                $value->setAttribute('user',User::find($val->userId));
+                $val->setAttribute('user',User::find($val->userId));
             }
             $value->setAttribute('ratings',$ratings);
         }
