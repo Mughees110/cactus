@@ -54,6 +54,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('businesses-get','App\Http\Controllers\BusinessController@index');
 	Route::post('businesses-get2','App\Http\Controllers\BusinessController@index2');
+	Route::post('businesses-sort-rating','App\Http\Controllers\BusinessController@index3');
+	Route::post('businesses-sort-points','App\Http\Controllers\BusinessController@index4');
 	Route::post('get-rating','App\Http\Controllers\BusinessController@getRating');
 
 	Route::post('items-store','App\Http\Controllers\ItemController@store');

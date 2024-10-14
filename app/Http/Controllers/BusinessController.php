@@ -215,5 +215,148 @@ class BusinessController extends Controller
         }
         return response()->json(['status'=>200,'data'=>$ratings]);
     }
+
+    public function index3(Request $request)
+    {
+        $bs = Business::all();
+
+        foreach ($bs as $key => $value) {
+            $latitudeFrom = (float)$value->latitude;
+            $longitudeFrom = (float)$value->longitude;
+            $latitudeTo = (float)$request->json('latitude');
+            $longitudeTo = (float)$request->json('longitude');
+
+            if (!empty($latitudeFrom) && !empty($latitudeTo) && !empty($longitudeFrom) && !empty($longitudeTo)) {
+                $long1 = deg2rad($longitudeFrom);
+                $long2 = deg2rad($longitudeTo);
+                $lat1 = deg2rad($latitudeFrom);
+                $lat2 = deg2rad($latitudeTo);
+
+                // Haversine Formula
+                $dlong = $long2 - $long1;
+                $dlati = $lat2 - $lat1;
+                $val = pow(sin($dlati / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($dlong / 2), 2);
+                $res = 2 * asin(sqrt($val));
+                $radius = 3958.756;
+                $result = ($res * $radius) * 1.60934; // Convert to kilometers
+                $value->setAttribute('distance', $result);
+            }
+
+            $cat = Category::find($value->categoryId);
+            $value->setAttribute('category', $cat);
+
+            $user = User::find($value->userId);
+            if ($user) {
+                $value->setAttribute('user', $user);
+            }
+
+            // Count points
+            $csum = Count::where('businessId', $value->id)->get();
+            $countPoints = 0;
+            foreach ($csum as $keycs => $valuecs) {
+                $countPoints += $valuecs->points;
+            }
+            $value->setAttribute('pointsGiven', $countPoints);
+
+            // Ratings and Average Rating Calculation
+            $ratings = Rating::where('businessId', $value->id)->get();
+            $totalStars = 0;
+            $totalRatings = $ratings->count();
+
+            foreach ($ratings as $key => $val) {
+                $val->setAttribute('user', User::find($val->userId));
+
+                // Convert 'stars' string to a float for calculation
+                $totalStars += (float)$val->stars;
+            }
+
+            // Calculate average rating
+            $averageRating = $totalRatings > 0 ? $totalStars / $totalRatings : 0;
+            $value->setAttribute('averageRating', round($averageRating, 2));
+            $value->setAttribute('ratings', $ratings);
+        }
+
+        // Sort businesses by average rating in descending order
+        $sortedBusinesses = $bs->sortByDesc(function ($business) {
+            return $business->averageRating; // Sorting by 'averageRating'
+        });
+
+        return response()->json(['status' => 200, 'data' => $sortedBusinesses->values()->all()]);
+    }
+
+    public function index4(Request $request)
+    {
+        $bs = Business::all();
+
+        foreach ($bs as $key => $value) {
+            $latitudeFrom = (float)$value->latitude;
+            $longitudeFrom = (float)$value->longitude;
+            $latitudeTo = (float)$request->json('latitude');
+            $longitudeTo = (float)$request->json('longitude');
+
+            if (!empty($latitudeFrom) && !empty($latitudeTo) && !empty($longitudeFrom) && !empty($longitudeTo)) {
+                $long1 = deg2rad($longitudeFrom);
+                $long2 = deg2rad($longitudeTo);
+                $lat1 = deg2rad($latitudeFrom);
+                $lat2 = deg2rad($latitudeTo);
+
+                // Haversine Formula
+                $dlong = $long2 - $long1;
+                $dlati = $lat2 - $lat1;
+                $val = pow(sin($dlati / 2), 2) + cos($lat1) * cos($lat2) * pow(sin($dlong / 2), 2);
+                $res = 2 * asin(sqrt($val));
+                $radius = 3958.756;
+                $result = ($res * $radius) * 1.60934; // Convert to kilometers
+                $value->setAttribute('distance', $result);
+            }
+
+            $cat = Category::find($value->categoryId);
+            $value->setAttribute('category', $cat);
+
+            $user = User::find($value->userId);
+            if ($user) {
+                $value->setAttribute('user', $user);
+            }
+
+            // Calculate the sum of points given by this business
+            if(!empty($request->json('userId'))){
+                $csum = Count::where('businessId', $value->id)->where('userId',$request->json('userId'))->get();
+            }
+            if(empty($request->json('userId'))){
+                $csum = Count::where('businessId', $value->id)->get();
+            }
+            $totalPointsGiven = 0;
+            foreach ($csum as $keycs => $valuecs) {
+                $totalPointsGiven += $valuecs->points;
+            }
+            $value->setAttribute('pointsGiven', $totalPointsGiven);
+
+            // Ratings and Average Rating Calculation
+            $ratings = Rating::where('businessId', $value->id)->get();
+            $totalStars = 0;
+            $totalRatings = $ratings->count();
+
+            foreach ($ratings as $key => $val) {
+                $val->setAttribute('user', User::find($val->userId));
+
+                // Convert 'stars' string to a float for calculation
+                $totalStars += (float)$val->stars;
+            }
+
+            // Calculate average rating
+            $averageRating = $totalRatings > 0 ? $totalStars / $totalRatings : 0;
+            $value->setAttribute('averageRating', round($averageRating, 2));
+            $value->setAttribute('ratings', $ratings);
+        }
+
+        // Sort businesses by points given in descending order
+        $sortedBusinesses = $bs->sortByDesc(function ($business) {
+            return $business->pointsGiven; // Sorting by 'pointsGiven'
+        });
+
+        return response()->json(['status' => 200, 'data' => $sortedBusinesses->values()->all()]);
+    }
+
+
     
 }
