@@ -77,6 +77,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
 	Route::post('rate','App\Http\Controllers\RatingController@rating');
 
+	Route::post('get-stats','App\Http\Controllers\AdminController@getStats');
+
 });
 Route::post('submit-to-calculate','App\Http\Controllers\PointController@submitToCalculate');
 Route::get('invalid',function(){
