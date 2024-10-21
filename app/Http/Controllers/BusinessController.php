@@ -251,12 +251,28 @@ class BusinessController extends Controller
             }
 
             // Count points
-            $csum = Count::where('businessId', $value->id)->get();
+            if(!empty($request->json('userId'))){
+                $csum = Count::where('businessId', $value->id)->where('userId',$request->json('userId'))->get();
+            }
+            if(empty($request->json('userId'))){
+                $csum = Count::where('businessId', $value->id)->get();
+            }
             $countPoints = 0;
             foreach ($csum as $keycs => $valuecs) {
                 $countPoints += $valuecs->points;
             }
             $value->setAttribute('pointsGiven', $countPoints);
+
+            if(!empty($request->json('userId'))){
+                
+                $cosum=Consumption::where('businessId',$value->id)->where('userId',$request->json('userId'))->get();
+                $countConsumes=0;
+                foreach ($cosum as $keycos => $valuecos) {
+                    $countConsumes=$countConsumes+$valuecos->points;
+                }
+                
+                $value->setAttribute('pointsConsumed',$countConsumes);
+            }
 
             // Ratings and Average Rating Calculation
             $ratings = Rating::where('businessId', $value->id)->get();
@@ -330,6 +346,17 @@ class BusinessController extends Controller
                 $totalPointsGiven += $valuecs->points;
             }
             $value->setAttribute('pointsGiven', $totalPointsGiven);
+
+            if(!empty($request->json('userId'))){
+                
+                $cosum=Consumption::where('businessId',$value->id)->where('userId',$request->json('userId'))->get();
+                $countConsumes=0;
+                foreach ($cosum as $keycos => $valuecos) {
+                    $countConsumes=$countConsumes+$valuecos->points;
+                }
+                
+                $value->setAttribute('pointsConsumed',$countConsumes);
+            }
 
             // Ratings and Average Rating Calculation
             $ratings = Rating::where('businessId', $value->id)->get();
